@@ -792,6 +792,10 @@
 		body.dark-mode .social-link[href*="whatsapp"] {
 			color: #25d366;
 		}
+		
+		.no-transition * {
+			transition: none !important;
+		}
     </style>
 </head>
 <body>
@@ -1231,6 +1235,10 @@
                 icon.classList.replace('fa-sun', 'fa-moon');
                 localStorage.setItem('theme', 'light');
             }
+			document.body.classList.add('no-transition');
+			setTimeout(() => {
+				document.body.classList.remove('no-transition');
+			}, 100);
         });
     </script>
 </body>
