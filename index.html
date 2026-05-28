@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kevin Mathew Maran — Computer Scientist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── TOKENS ── */
+:root {
+  --bg:        #0e0f0f;
+  --bg2:       #131515;
+  --bg3:       #181a1a;
+  --surface:   #1c1e1e;
+  --surface2:  #222525;
+  --border:    rgba(255,255,255,.08);
+  --border2:   rgba(255,255,255,.04);
+  --gold:      #c9a84c;
+  --gold2:     #e2c47a;
+  --gold-dim:  rgba(201,168,76,.10);
+  --gold-line: rgba(201,168,76,.30);
+  --text:      #f0ece4;
+  --text2:     #9a9490;
+  --text3:     #5e5b57;
+  --serif:     'Cormorant Garamond', Georgia, serif;
+  --sans:      'Inter', system-ui, sans-serif;
+  --mono:      'JetBrains Mono', monospace;
+  --radius:    6px;
+  --shadow:    0 2px 24px rgba(0,0,0,.45);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 52px;
+  height: 58px;
+  background: rgba(14,15,15,.94);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border2);
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: .01em;
+}
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text2);
+  text-decoration: none;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--gold); }
+.nav-burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav-burger span { display: block; width: 20px; height: 1.5px; background: var(--text2); margin: 5px 0; transition: .2s; }
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── SHARED LAYOUT ── */
+.section-inner {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 96px 52px;
+}
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.section-heading {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 52px;
+}
+.section-heading em { font-style: italic; color: var(--gold2); }
+.divider {
+  width: 40px; height: 1px;
+  background: var(--gold-line);
+  margin: 16px 0 48px;
+}
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 52px 80px;
+  max-width: 1060px;
+  margin: 0 auto;
+  position: relative;
+}
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 80px;
+  align-items: center;
+  width: 100%;
+}
+.hero-content {}
+.hero-photo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  animation: riseIn .7s .6s ease forwards;
+}
+.hero-photo-frame {
+  position: relative;
+  width: 260px;
+  height: 320px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+}
+.hero-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.hero-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1.5px dashed var(--gold-line);
+  border-radius: 4px;
+}
+.hero-photo-placeholder svg {
+  width: 48px;
+  height: 48px;
+  fill: var(--text3);
+  opacity: .5;
+}
+.hero-photo-placeholder-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: center;
+  line-height: 1.7;
+}
+
+.hero-photo-caption {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: riseIn .7s .1s ease forwards;
+}
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(52px, 8vw, 100px);
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: -.01em;
+  color: var(--text);
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: riseIn .7s .2s ease forwards;
+}
+.hero-name-second {
+  font-family: var(--serif);
+  font-size: clamp(52px, 8vw, 100px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gold2);
+  line-height: .95;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: riseIn .7s .3s ease forwards;
+}
+.hero-rule {
+  width: 60px; height: 1px;
+  background: var(--gold-line);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: riseIn .7s .4s ease forwards;
+}
+.hero-tagline {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text2);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: riseIn .7s .45s ease forwards;
+}
+.hero-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: riseIn .7s .5s ease forwards;
+}
+.pill {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text2);
+  background: var(--surface);
+  transition: all .2s;
+}
+.pill:hover { border-color: var(--gold-line); color: var(--gold2); }
+.pill.gold { border-color: var(--gold-line); color: var(--gold2); background: var(--gold-dim); }
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: riseIn .7s .58s ease forwards;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 26px;
+  border-radius: var(--radius);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all .2s;
+}
+.btn-gold {
+  background: var(--gold);
+  color: #0e0f0f;
+}
+.btn-gold:hover { background: var(--gold2); transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent;
+  color: var(--text2);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--gold-line); color: var(--gold2); transform: translateY(-1px); }
+
+.hero-stats {
+  display: flex;
+  gap: 52px;
+  flex-wrap: wrap;
+  margin-top: 72px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border2);
+  opacity: 0;
+  animation: riseIn .7s .72s ease forwards;
+}
+.stat-val {
+  font-family: var(--serif);
+  font-size: 38px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-val em { font-style: italic; color: var(--gold2); }
+.stat-lbl {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 5px;
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── SECTION DIVIDERS ── */
+.section-sep {
+  height: 1px;
+  background: var(--border2);
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+/* ── ABOUT ── */
+#about { background: var(--bg2); }
+.about-cols {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+.about-body p {
+  color: var(--text2);
+  font-size: 14.5px;
+  margin-bottom: 16px;
+  font-weight: 300;
+  line-height: 1.8;
+}
+.about-body p strong { color: var(--text); font-weight: 500; }
+.skills-stack { display: flex; flex-direction: column; gap: 18px; }
+.skill-row {}
+.skill-row-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.skill-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chip {
+  font-size: 11.5px;
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px 10px;
+  font-family: var(--sans);
+  font-weight: 400;
+  transition: border-color .2s, color .2s;
+}
+.chip:hover { border-color: var(--gold-line); color: var(--text); }
+
+/* ── EXPERIENCE ── */
+#experience {}
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0 44px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--border2);
+  position: relative;
+}
+.tl-item:last-child { border-bottom: none; }
+.tl-left {}
+.tl-period {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .08em;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+.tl-org {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold);
+  line-height: 1.4;
+}
+.tl-loc {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 3px;
+  font-style: italic;
+}
+.tl-right {}
+.tl-role {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 14px;
+  line-height: 1.25;
+}
+.tl-points { list-style: none; padding: 0; }
+.tl-points li {
+  font-size: 13.5px;
+  color: var(--text2);
+  font-weight: 300;
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 8px;
+  line-height: 1.65;
+}
+.tl-points li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 11px;
+  top: 2px;
+}
+
+/* ── PROJECTS ── */
+#projects { background: var(--bg2); }
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.proj-card {
+  background: var(--surface);
+  padding: 28px 30px;
+  transition: background .22s;
+  display: flex;
+  flex-direction: column;
+}
+.proj-card:hover { background: var(--surface2); }
+.proj-card.span2 { grid-column: span 2; }
+.proj-period {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.proj-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.proj-desc {
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 300;
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 18px;
+}
+.proj-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.proj-tag {
+  font-size: 10.5px;
+  font-family: var(--mono);
+  color: var(--gold);
+  border: 1px solid var(--gold-line);
+  border-radius: 2px;
+  padding: 2px 8px;
+  background: var(--gold-dim);
+}
+
+/* ── PUBLICATIONS ── */
+#publications {}
+.pub-list { display: flex; flex-direction: column; }
+.pub-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 0 32px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--border2);
+  align-items: start;
+}
+.pub-item:last-child { border-bottom: none; }
+.pub-idx {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--surface2);
+  line-height: 1;
+  padding-top: 4px;
+  text-align: right;
+}
+.pub-venue {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 7px;
+}
+.pub-title {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+.pub-desc {
+  font-size: 13px;
+  color: var(--text2);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.pub-link {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--gold-line);
+  padding-bottom: 1px;
+  transition: border-color .2s, color .2s;
+}
+.pub-link:hover { color: var(--gold2); border-color: var(--gold); }
+
+/* ── CERTIFICATIONS ── */
+#certifications { background: var(--bg2); }
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.cert-card {
+  background: var(--surface);
+  padding: 26px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: background .2s;
+}
+.cert-card:hover { background: var(--surface2); }
+.cert-issuer {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--gold);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.cert-name {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.cert-date { font-size: 11.5px; color: var(--text3); font-family: var(--mono); }
+.cert-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.cert-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 3px;
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all .18s;
+  cursor: pointer;
+  border: none;
+}
+.cert-btn-dl {
+  background: var(--gold-dim);
+  color: var(--gold2);
+  border: 1px solid var(--gold-line);
+}
+.cert-btn-dl:hover { background: var(--gold); color: #0e0f0f; }
+.cert-btn-verify {
+  background: transparent;
+  color: var(--text3);
+  border: 1px solid var(--border);
+}
+.cert-btn-verify:hover { color: var(--text2); border-color: var(--border); }
+
+/* ── EDUCATION ── */
+#education {}
+.edu-list { display: flex; flex-direction: column; }
+.edu-item {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0 44px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--border2);
+}
+.edu-item:last-child { border-bottom: none; }
+.edu-period { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .08em; margin-bottom: 4px; }
+.edu-gpa { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--gold2); margin-top: 8px; }
+.edu-gpa-lbl { font-size: 10px; color: var(--text3); font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.edu-degree { font-family: var(--serif); font-size: 21px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.2; }
+.edu-school { font-size: 13px; font-weight: 500; color: var(--gold); margin-bottom: 12px; }
+.edu-body { font-size: 13px; color: var(--text2); font-weight: 300; line-height: 1.7; }
+.edu-award {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 5px 12px;
+  border: 1px solid var(--gold-line);
+  border-radius: 2px;
+  font-size: 11.5px;
+  color: var(--gold2);
+  background: var(--gold-dim);
+  font-weight: 500;
+}
+
+/* ── ACHIEVEMENTS ── */
+#achievements { background: var(--bg2); }
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.ach-card {
+  background: var(--surface);
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: background .2s;
+}
+.ach-card:hover { background: var(--surface2); }
+.ach-symbol { font-size: 22px; }
+.ach-title { font-family: var(--serif); font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.ach-source { font-family: var(--mono); font-size: 9.5px; color: var(--gold); letter-spacing: .1em; text-transform: uppercase; }
+.ach-desc { font-size: 12.5px; color: var(--text2); font-weight: 300; line-height: 1.65; }
+
+/* ── DOWNLOADS ── */
+#downloads {}
+.dl-intro { font-size: 14px; color: var(--text2); font-weight: 300; max-width: 520px; margin-bottom: 36px; line-height: 1.75; }
+.dl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.dl-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 24px;
+  background: var(--surface);
+  text-decoration: none;
+  transition: background .2s;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  width: 100%;
+}
+.dl-card:hover { background: var(--surface2); }
+.dl-icon-wrap {
+  width: 40px; height: 40px;
+  border-radius: 4px;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.dl-text { flex: 1; }
+.dl-name { font-size: 13.5px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.dl-sub { font-family: var(--mono); font-size: 9.5px; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
+.dl-arrow { font-size: 15px; color: var(--gold); opacity: .6; }
+
+/* ── LABS ── */
+#labs { background: var(--bg2); }
+.labs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.lab-card {
+  display: block;
+  background: var(--surface);
+  padding: 32px 36px;
+  text-decoration: none;
+  transition: background .22s;
+}
+.lab-card:hover { background: var(--surface2); }
+.lab-type { font-family: var(--mono); font-size: 9.5px; color: var(--gold); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px; }
+.lab-name { font-family: var(--serif); font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+.lab-uni { font-size: 12px; color: var(--text3); margin-bottom: 16px; font-style: italic; }
+.lab-desc { font-size: 13px; color: var(--text2); font-weight: 300; line-height: 1.7; }
+.lab-cta { margin-top: 20px; font-size: 12px; font-weight: 500; color: var(--gold); letter-spacing: .04em; }
+
+/* ── CONTACT ── */
+#contact {}
+.contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+.contact-left {}
+.contact-intro { font-size: 15px; color: var(--text2); font-weight: 300; line-height: 1.8; max-width: 420px; margin-bottom: 36px; }
+.contact-email-big {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--gold2);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold-line);
+  padding-bottom: 2px;
+  transition: color .2s;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.contact-email-big:hover { color: var(--text); }
+.contact-phone { font-family: var(--mono); font-size: 12px; color: var(--text3); }
+.contact-links-col { display: flex; flex-direction: column; gap: 10px; }
+.clink {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: all .2s;
+}
+.clink:hover { background: var(--surface2); border-color: var(--gold-line); }
+.clink-icon { width: 34px; height: 34px; border-radius: 4px; background: var(--gold-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.clink-icon svg { width: 16px; height: 16px; fill: var(--gold2); }
+.clink-text {}
+.clink-label { font-size: 12px; font-weight: 500; color: var(--text); }
+.clink-sub { font-size: 11px; color: var(--text3); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border2);
+  padding: 28px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text3);
+  font-family: var(--sans);
+  position: relative;
+  z-index: 1;
+}
+footer a { color: var(--gold); text-decoration: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; position: absolute; top: 58px; left: 0; right: 0; background: var(--bg2); flex-direction: column; padding: 20px; gap: 18px; border-bottom: 1px solid var(--border2); }
+  .nav-links.open { display: flex; }
+  .nav-burger { display: block; }
+  #hero { padding: 110px 20px 60px; }
+  .hero-layout { grid-template-columns: 1fr; gap: 48px; }
+  .hero-photo-col { flex-direction: row; justify-content: flex-start; gap: 24px; align-items: center; }
+  .hero-photo-frame { width: 110px; height: 140px; flex-shrink: 0; }
+  .hero-photo-placeholder svg { width: 28px; height: 28px; }
+  .hero-stats { gap: 28px; }
+  .section-inner { padding: 64px 20px; }
+  .about-cols { grid-template-columns: 1fr; gap: 40px; }
+  .tl-item { grid-template-columns: 1fr; gap: 10px; }
+  .edu-item { grid-template-columns: 1fr; gap: 8px; }
+  .labs-grid { grid-template-columns: 1fr; }
+  .contact-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .proj-card.span2 { grid-column: span 1; }
+  footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px 20px; }
+}
+@media (max-width: 600px) {
+  .hero-stats { gap: 24px; }
+  .stat-val { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Kevin Mathew Maran</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#downloads">Downloads</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-burger" id="burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero" style="position:relative;z-index:1;">
+  <div class="hero-layout">
+
+    <!-- LEFT: text content -->
+    <div class="hero-content">
+      <div class="hero-eyebrow">Computer Scientist &nbsp;·&nbsp; San Antonio, TX &nbsp;·&nbsp; Open to Opportunities</div>
+      <div class="hero-name">Kevin Mathew</div>
+      <div class="hero-name-second">Maran</div>
+      <div class="hero-rule"></div>
+      <p class="hero-tagline">M.S. Computer Science, UTSA (4.00 GPA) — specializing in GPU computing, distributed systems, machine learning, and HPC. Graduate researcher with publications at APS DFD and TFEC. Gold Medalist, Anna University.</p>
+      <div class="hero-pills">
+        <span class="pill gold">🥇 Gold Medalist · Anna University</span>
+        <span class="pill">Research Assistant · CTV Lab</span>
+        <span class="pill">Research Volunteer · CareAI Lab</span>
+        <span class="pill">Adobe Student Ambassador</span>
+        <span class="pill">2nd Place · RowdyHacks XI</span>
+      </div>
+      <div class="hero-actions">
+        <a href="https://www.linkedin.com/in/kevinmathewmaran" target="_blank" class="btn btn-gold">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+          View LinkedIn
+        </a>
+        <a href="https://github.com/KevinMathew1709" target="_blank" class="btn btn-ghost">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 002 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.69c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0022 12 10 10 0 0012 2z"/></svg>
+          GitHub
+        </a>
+        <a href="https://devpost.com/KevinMathew1709" target="_blank" class="btn btn-ghost">Devpost</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-val"><em>4.00</em></div>
+          <div class="stat-lbl">GPA · UTSA</div>
+        </div>
+        <div>
+          <div class="stat-val">#1</div>
+          <div class="stat-lbl">of 12,091 · Anna Univ.</div>
+        </div>
+        <div>
+          <div class="stat-val">3</div>
+          <div class="stat-lbl">Publications</div>
+        </div>
+        <div>
+          <div class="stat-val">10B+</div>
+          <div class="stat-lbl">CFD Data Points</div>
+        </div>
+        <div>
+          <div class="stat-val"><em>3×</em></div>
+          <div class="stat-lbl">HPC Speedup</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: photo -->
+    <div class="hero-photo-col">
+      <div class="hero-photo-frame">
+        <!--
+          Replace the placeholder below with your photo:
+          <img src="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-Photo.jpg" alt="Kevin Mathew Maran" />
+        -->
+        <div class="hero-photo-placeholder">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+          </svg>
+          <div class="hero-photo-placeholder-text">Photo<br/>coming soon</div>
+        </div>
+      </div>
+      <div class="hero-photo-caption">Kevin Mathew Maran</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<div class="section-sep"></div>
+<section id="about">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">About</div>
+    <h2 class="section-heading reveal">Background &amp; <em>Skills</em></h2>
+    <div class="about-cols">
+      <div class="about-body reveal">
+        <p>Master's graduate in Computer Science from UTSA (4.00 GPA), specializing in <strong>GPU computing, distributed systems, machine learning, and cybersecurity</strong> — with a focus on scalable high-performance AI and scientific computing systems.</p>
+        <p>Graduate Research Assistant at the <strong>CTV Lab</strong>, optimizing GPU-accelerated CFD pipelines for 10B+ data point datasets using MPI, CUDA, OpenFOAM, and NVIDIA H200 HPC clusters. Research presented at APS DFD 2025 and TFEC 2026.</p>
+        <p>Graduate Research Volunteer at <strong>CareAI Lab</strong>, developing GPU-accelerated ASR evaluation pipelines to analyze bias in speech recognition for L2 English speakers using transformer-based models and large-scale audio processing workflows.</p>
+        <p>Previously AI Intern at <strong>Mind Labz</strong> building RAG-based LLM applications with LangChain, and Associate Software Engineer at <strong>Accenture</strong> working on backend systems, Unix scripting, C++, and Oracle SQL.</p>
+        <p>Gold Medalist B.E. in Mechanical Engineering from Anna University — ranked <strong>#1 of 12,091</strong> students. Now graduated (Spring 2026) and open to opportunities in Software Engineering, ML, HPC, and AI Infrastructure.</p>
+      </div>
+      <div class="skills-stack reveal">
+        <div class="skill-row">
+          <div class="skill-row-label">Languages</div>
+          <div class="skill-chips">
+            <span class="chip">Python</span><span class="chip">C++</span><span class="chip">C</span><span class="chip">Java</span><span class="chip">JavaScript</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-label">HPC &amp; Systems</div>
+          <div class="skill-chips">
+            <span class="chip">CUDA</span><span class="chip">MPI</span><span class="chip">OpenMP</span><span class="chip">Numba</span><span class="chip">Slurm</span><span class="chip">Linux</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-label">ML &amp; AI</div>
+          <div class="skill-chips">
+            <span class="chip">PyTorch</span><span class="chip">TensorFlow</span><span class="chip">Transformers</span><span class="chip">LangChain</span><span class="chip">Scikit-learn</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-label">CFD &amp; Visualization</div>
+          <div class="skill-chips">
+            <span class="chip">OpenFOAM</span><span class="chip">ParaView</span><span class="chip">VTK</span><span class="chip">MATLAB</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-label">Data &amp; Databases</div>
+          <div class="skill-chips">
+            <span class="chip">NumPy</span><span class="chip">Pandas</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">MongoDB</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-label">Cybersecurity</div>
+          <div class="skill-chips">
+            <span class="chip">Kali Linux</span><span class="chip">Metasploit</span><span class="chip">Burp Suite</span><span class="chip">Wireshark</span>
+          </div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-row-label">Cloud &amp; Tools</div>
+          <div class="skill-chips">
+            <span class="chip">AWS</span><span class="chip">GCP</span><span class="chip">Docker</span><span class="chip">Git</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<div class="section-sep"></div>
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Experience</div>
+    <h2 class="section-heading reveal">Professional <em>History</em></h2>
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-left">
+          <div class="tl-period">Jun 2025 – May 2026</div>
+          <div class="tl-org">University of Texas at San Antonio<br/>CTV Lab</div>
+          <div class="tl-loc">San Antonio, TX · On-site</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-role">Graduate Research Assistant</div>
+          <ul class="tl-points">
+            <li>Optimized GPU-accelerated CFD post-processing pipeline (AQUILA) for large-scale workloads exceeding 10 billion data points</li>
+            <li>Implemented parallel computing using MPI, CUDA, and OpenMP for distributed HPC workloads on NVIDIA H100/H200 clusters</li>
+            <li>Improved runtime by ~30–45% through GPU kernel optimization and distributed workload balancing across 8+ nodes</li>
+            <li>Reduced memory footprint by ~25% via data partitioning, batching, and efficient multi-GPU memory management</li>
+            <li>Scaled advection of 936M particles through curvilinear meshes using Numba CUDA + MPI; replaced hierarchical nearest-neighbor search with persistent cell indexing, reducing kernel compute cost by 6.7×</li>
+            <li>Achieved ~3× end-to-end speedup across 300M+ particle trajectories and 50M+ FTLE field evaluations</li>
+            <li>Tools: OpenFOAM, ParaView, VTK, HDF5, Slurm, NVIDIA Nsight Systems</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-left">
+          <div class="tl-period">Oct 2024 – Present</div>
+          <div class="tl-org">University of Texas at San Antonio<br/>CareAI Lab</div>
+          <div class="tl-loc">Remote</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-role">Graduate Research Volunteer</div>
+          <ul class="tl-points">
+            <li>Developed GPU-accelerated ASR evaluation pipeline using Python and PyTorch on 1,000+ audio samples</li>
+            <li>Applied SMOTE-based augmentation for class imbalance handling, improving F1-score by ~12–18%</li>
+            <li>Evaluated Whisper, Wav2Vec2, and NVIDIA Parakeet models using CER, WER, and TSR metrics on multilingual datasets across 11 language backgrounds</li>
+            <li>Conducted human subjects study collecting perceptual accentedness ratings; established statistically significant correlations between accent strength and ASR error rates</li>
+            <li>Research submitted to AAAI 2026 and presented at AIM 2026</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-left">
+          <div class="tl-period">May 2025 – Aug 2025</div>
+          <div class="tl-org">Mind Labz Technology Solutions LLC</div>
+          <div class="tl-loc">Remote · San Antonio, TX</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-role">Summer AI Intern</div>
+          <ul class="tl-points">
+            <li>Developed RAG-based AI applications using LangChain, OpenAI API, and vector databases for enterprise workflows</li>
+            <li>Built LLM-based data analysis systems for automated document understanding and knowledge retrieval</li>
+            <li>Improved system latency by ~20–30% through prompt optimization and efficient retrieval pipeline design</li>
+            <li>Reduced manual analysis time by ~50% through intelligent automation of document processing pipelines</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-left">
+          <div class="tl-period">Apr 2024 – Aug 2024</div>
+          <div class="tl-org">Accenture India</div>
+          <div class="tl-loc">Chennai, India · On-site</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-role">Associate Software Engineer</div>
+          <ul class="tl-points">
+            <li>Backend software development using C++, Unix/Linux scripting, Oracle SQL, and enterprise application frameworks</li>
+            <li>Developed and maintained production-level systems in Agile/Scrum environments with cross-functional teams</li>
+            <li>Database querying, optimization, and backend service integration in enterprise-scale distributed applications</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-left">
+          <div class="tl-period">Sep 2022 – Oct 2022</div>
+          <div class="tl-org">Renault Nissan Automotive India</div>
+          <div class="tl-loc">Chennai, India · On-site</div>
+        </div>
+        <div class="tl-right">
+          <div class="tl-role">Apprentice Trainee (NATS)</div>
+          <ul class="tl-points">
+            <li>Operated CNC machines in crankshaft manufacturing and induction hardening production systems</li>
+            <li>Performed mechanical inspection, quality assurance, and maintenance under National Apprentice Training Scheme</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<div class="section-sep"></div>
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Projects</div>
+    <h2 class="section-heading reveal">Selected <em>Work</em></h2>
+    <div class="proj-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-period">Feb – May 2026</div>
+        <div class="proj-title">FTLE/FSLE GPU Performance Optimization</div>
+        <div class="proj-desc">Scaled advection of 936M particles through curvilinear meshes using Numba CUDA and MPI across 8 distributed ranks. Replaced hierarchical global nearest-neighbor search with persistent cell indexing, reducing kernel compute cost 6.7×. ~3× end-to-end speedup across 300M+ particle trajectories.</div>
+        <div class="proj-tags"><span class="proj-tag">CUDA</span><span class="proj-tag">MPI</span><span class="proj-tag">Numba</span><span class="proj-tag">HPC</span><span class="proj-tag">Python</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-period">Aug – Dec 2025</div>
+        <div class="proj-title">AAAI 2026 — ASR Bias &amp; Linguistic Analysis</div>
+        <div class="proj-desc">Large-scale ASR bias evaluation framework across accents, speaker characteristics, lexical frequency, and syntactic structure. Evaluated Whisper, Wav2Vec2, and NVIDIA Parakeet using CER/WER/TSR on multilingual datasets with human-annotated linguistic features.</div>
+        <div class="proj-tags"><span class="proj-tag">PyTorch</span><span class="proj-tag">NLP</span><span class="proj-tag">HuggingFace</span><span class="proj-tag">spaCy</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-period">Mar 2026</div>
+        <div class="proj-title">F1nalStint</div>
+        <div class="proj-desc">Motorsports-inspired full-stack platform integrating productivity and Formula 1 analytics. Modules: GridWalk (historical F1 data exploration), RaceIQ (race analytics &amp; prediction), and an F1-themed Pomodoro productivity system.</div>
+        <div class="proj-tags"><span class="proj-tag">Full-Stack</span><span class="proj-tag">Data Viz</span><span class="proj-tag">UI/UX</span><span class="proj-tag">APIs</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-period">Oct 2025 · 2nd Place RowdyHacks XI</div>
+        <div class="proj-title">UTSA FindMySpot</div>
+        <div class="proj-desc">Real-time smart parking detection (~90% accuracy, &lt;200ms inference) using YOLO + OpenCV deployed on live CCTV streams. Integrated into a web dashboard for real-time availability tracking.</div>
+        <div class="proj-tags"><span class="proj-tag">YOLO</span><span class="proj-tag">OpenCV</span><span class="proj-tag">Laravel</span><span class="proj-tag">MySQL</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-period">Mar – May 2025</div>
+        <div class="proj-title">Distributed Math Service</div>
+        <div class="proj-desc">Multithreaded XML-RPC distributed computing service in Python. Thread-safe atomic invocation tracking with locking mechanisms. Concurrent client generating 1,000+ RPC calls. ~35% latency reduction via efficient threading.</div>
+        <div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">XML-RPC</span><span class="proj-tag">Concurrency</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-period">May – Jul 2025</div>
+        <div class="proj-title">ICNLSP 2025 — ASR Bias Framework</div>
+        <div class="proj-desc">Comparative ASR bias evaluation across speaker demographics, accents, and linguistic context. GPU-accelerated audio processing pipelines with POS-based analysis. Performance disparities identified across Arabic and Vietnamese accented English.</div>
+        <div class="proj-tags"><span class="proj-tag">Speech AI</span><span class="proj-tag">NLP</span><span class="proj-tag">PyTorch</span><span class="proj-tag">GPU</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PUBLICATIONS ── -->
+<div class="section-sep"></div>
+<section id="publications">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Publications</div>
+    <h2 class="section-heading reveal">Research <em>Publications</em></h2>
+    <div class="pub-list">
+
+      <div class="pub-item reveal">
+        <div class="pub-idx">01</div>
+        <div>
+          <div class="pub-venue">AIM 2026 — Academia Industry Military Conference · May 19, 2026</div>
+          <div class="pub-title">Evaluating Automatic Speech Recognition Models for Bias from Speaker Characteristics, Context, and Linguistic Dimensions</div>
+          <div class="pub-desc">Peer-reviewed poster on bias in ASR systems (Whisper, Wav2Vec2, Parakeet) across speaker accent, gender, and linguistic structure. Open-source four-component evaluation framework with human subjects study. Statistically significant correlations between accent strength and ASR error rates across 11 language backgrounds. Lexical frequency analysis using SUBTLEX-US norms and syntactic completeness analysis using spaCy-based POS tagging.</div>
+          <span class="pub-link" style="color:var(--text3);border-color:transparent;cursor:default;font-size:11px;">Houston, TX</span>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-idx">02</div>
+        <div>
+          <div class="pub-venue">TFEC 2026 — 11th Thermal &amp; Fluids Engineering Conference · March 12, 2026 · Phoenix, AZ</div>
+          <div class="pub-title">Compressibility Effects over a Supersonic Bump</div>
+          <div class="pub-desc">Peer-reviewed conference paper on compressible turbulent flow and boundary layer development over curved geometries using CFD. Investigated compressibility effects on boundary layer structure, turbulence behavior, and flow separation. Large-scale HPC simulation using OpenFOAM, MPI-based parallel computing, ParaView, MATLAB, and Python-based analysis pipelines.</div>
+          <a href="https://dl.astfe.org/conferences/tfec2026,3fd7ebdf2c613f60,314dff5126d08235.html" target="_blank" class="pub-link">View Publication ↗</a>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-idx">03</div>
+        <div>
+          <div class="pub-venue">APS DFD 2025 — 78th Annual Meeting · November 23, 2025 · Houston, TX</div>
+          <div class="pub-title">Lagrangian Coherent Structures in High-Speed Crossflow Jets via DNS</div>
+          <div class="pub-desc">GPU-accelerated optimization of the AQUILA CFD post-processing pipeline for large-scale DNS datasets exceeding 10 billion data points. MPI + CUDA-based parallelization on NVIDIA H200 clusters for Lagrangian Coherent Structures analysis in high-speed flow fields. GPU-accelerated scientific visualization using Python, CUDA, OpenFOAM, and ParaView.</div>
+          <a href="https://meetings-archive.aps.org/dfd/2025/c12/14/" target="_blank" class="pub-link">View Abstract ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CERTIFICATIONS ── -->
+<div class="section-sep"></div>
+<section id="certifications">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Certifications</div>
+    <h2 class="section-heading reveal">Credentials &amp; <em>Licenses</em></h2>
+    <div class="certs-grid">
+
+      <div class="cert-card reveal">
+        <div class="cert-issuer">Python Institute®</div>
+        <div class="cert-name">PCAP – Certified Associate in Python Programming</div>
+        <div class="cert-date">Issued Jan 2025 · ID: S5Wb.V6jr.8NRz</div>
+        <div class="cert-actions">
+          <a href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-PCAP.pdf" download target="_blank" class="cert-btn cert-btn-dl">⬇ Download</a>
+          <a href="https://verify.openedg.org/?id=S5Wb.V6jr.8NRz" target="_blank" class="cert-btn cert-btn-verify">↗ Verify</a>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-issuer">Python Institute®</div>
+        <div class="cert-name">PCEP – Certified Entry-Level Python Programmer</div>
+        <div class="cert-date">Issued Oct 2024 · ID: ZYQE.QcN9.PtsY</div>
+        <div class="cert-actions">
+          <a href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-PCEP.pdf" download target="_blank" class="cert-btn cert-btn-dl">⬇ Download</a>
+          <a href="https://verify.openedg.org/?id=ZYQE.QcN9.PtsY" target="_blank" class="cert-btn cert-btn-verify">↗ Verify</a>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-issuer">Microsoft</div>
+        <div class="cert-name">MOS: Excel Expert (Microsoft 365 Apps)</div>
+        <div class="cert-date">Issued Sep 2023 · ID: C5C87X-7F4E6B</div>
+        <div class="cert-actions">
+          <a href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-MSExcel.pdf" download target="_blank" class="cert-btn cert-btn-dl">⬇ Download</a>
+          <a href="https://www.credly.com/badges/fad46164-3a56-4b0e-b654-3fc80f2ae779/public_url" target="_blank" class="cert-btn cert-btn-verify">↗ Credly</a>
+        </div>
+      </div>
+
+      <div class="cert-card reveal">
+        <div class="cert-issuer">Skillsoft</div>
+        <div class="cert-name">Building Neural Networks: Artificial Neural Networks Using Frameworks</div>
+        <div class="cert-date">Issued Nov 2023 · ID: 87866227</div>
+        <div class="cert-actions">
+          <a href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-ANN.pdf" download target="_blank" class="cert-btn cert-btn-dl">⬇ Download</a>
+          <a href="https://skillsoft.digitalbadges.skillsoft.com/7382f17f-eee5-4b07-bc90-41eb67403428" target="_blank" class="cert-btn cert-btn-verify">↗ Badge</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<div class="section-sep"></div>
+<section id="education">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Education</div>
+    <h2 class="section-heading reveal">Academic <em>Background</em></h2>
+    <div class="edu-list">
+
+      <div class="edu-item reveal">
+        <div class="tl-left">
+          <div class="edu-period">Aug 2024 – May 2026</div>
+          <div class="edu-gpa">4.00</div>
+          <div class="edu-gpa-lbl">GPA</div>
+        </div>
+        <div>
+          <div class="edu-degree">Master of Science — Computer Science</div>
+          <div class="edu-school">University of Texas at San Antonio</div>
+          <div class="edu-body">Specializations: Data Science &amp; Cybersecurity. Coursework includes GPU Computing, High Performance ML, Distributed Systems, Penetration Testing, Analysis of Algorithms, Machine Learning, Computer Architecture, and Database Systems.<br/>Activities: Adobe Student Ambassador · CompTIA Student Chapter · Indian Student Association · UTSA Alumni Association</div>
+          <div class="edu-award">🎓 2× Scholarship Recipient — $2,000 total</div>
+        </div>
+      </div>
+
+      <div class="edu-item reveal">
+        <div class="tl-left">
+          <div class="edu-period">Sep 2018 – Jul 2022</div>
+          <div class="edu-gpa">3.97</div>
+          <div class="edu-gpa-lbl">GPA</div>
+        </div>
+        <div>
+          <div class="edu-degree">B.E. — Mechanical Engineering</div>
+          <div class="edu-school">Velammal Engineering College, Anna University</div>
+          <div class="edu-body">Activities: Society of Automotive Engineers (SAE) — Treasurer. Ranked #1 in Mechanical Engineering among all non-autonomous affiliated colleges in Tamil Nadu state across 12,091 students. CGPA 9.45/10.00.</div>
+          <div class="edu-award">🥇 Gold Medalist — #1 of 12,091 · Anna University</div>
+        </div>
+      </div>
+
+      <div class="edu-item reveal">
+        <div class="tl-left">
+          <div class="edu-period">Apr 2016 – Apr 2018</div>
+          <div class="edu-gpa">92.6<span style="font-size:18px">%</span></div>
+          <div class="edu-gpa-lbl">Score</div>
+        </div>
+        <div>
+          <div class="edu-degree">Higher Secondary — Bio-Maths</div>
+          <div class="edu-school">Velammal Vidhyashram, Surapet (CBSE)</div>
+        </div>
+      </div>
+
+      <div class="edu-item reveal">
+        <div class="tl-left">
+          <div class="edu-period">Apr 2014 – Apr 2016</div>
+          <div class="edu-gpa">10<span style="font-size:18px">/10</span></div>
+          <div class="edu-gpa-lbl">CGPA</div>
+        </div>
+        <div>
+          <div class="edu-degree">High School — Maths-Science</div>
+          <div class="edu-school">Velammal Vidhyashram, Surapet (CBSE)</div>
+          <div class="edu-award">🏅 School Topper — Perfect 10/10 CGPA</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ACHIEVEMENTS ── -->
+<div class="section-sep"></div>
+<section id="achievements">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Achievements</div>
+    <h2 class="section-heading reveal">Honors &amp; <em>Awards</em></h2>
+    <div class="ach-grid">
+      <div class="ach-card reveal">
+        <div class="ach-symbol">🥇</div>
+        <div class="ach-title">Gold Medalist — Anna University</div>
+        <div class="ach-source">Sep 2023</div>
+        <div class="ach-desc">1st rank in Mechanical Engineering among all non-autonomous colleges in Tamil Nadu, 12,091 students</div>
+      </div>
+      <div class="ach-card reveal">
+        <div class="ach-symbol">🏆</div>
+        <div class="ach-title">2nd Place — RowdyHacks XI</div>
+        <div class="ach-source">2025 · UTSA</div>
+        <div class="ach-desc">Secured 2nd place at UTSA's annual hackathon with the FindMySpot smart parking detection system</div>
+      </div>
+      <div class="ach-card reveal">
+        <div class="ach-symbol">🎓</div>
+        <div class="ach-title">CS Department Scholarship</div>
+        <div class="ach-source">Jul 2025 · UTSA</div>
+        <div class="ach-desc">$1,000 for Fall 2025 for excellent academic performance and research contribution</div>
+      </div>
+      <div class="ach-card reveal">
+        <div class="ach-symbol">🌟</div>
+        <div class="ach-title">ISA Annual Scholarship</div>
+        <div class="ach-source">Nov 2024 · ISA UTSA</div>
+        <div class="ach-desc">$1,000 for academic year 2024–2025 recognizing strong graduate academic performance</div>
+      </div>
+      <div class="ach-card reveal">
+        <div class="ach-symbol">📊</div>
+        <div class="ach-title">GRE Score: 308 (Q:162)</div>
+        <div class="ach-source">Oct 2023 · ETS</div>
+        <div class="ach-desc">Quantitative 162 · Verbal 146 · Analytical Writing 3.5</div>
+      </div>
+      <div class="ach-card reveal">
+        <div class="ach-symbol">🇬🇧</div>
+        <div class="ach-title">IELTS: 8.0 Band (C1)</div>
+        <div class="ach-source">Aug 2023 · IDP Education</div>
+        <div class="ach-desc">Listening 8.5 · Reading 8.5 · Speaking 7.5 · Writing 7.0</div>
+      </div>
+      <div class="ach-card reveal">
+        <div class="ach-symbol">🏅</div>
+        <div class="ach-title">School Topper — CBSE Grade X</div>
+        <div class="ach-source">Jun 2016 · CBSE</div>
+        <div class="ach-desc">Perfect CGPA of 10/10</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DOWNLOADS ── -->
+<div class="section-sep"></div>
+<section id="downloads">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Downloads</div>
+    <h2 class="section-heading reveal">Files &amp; <em>Documents</em></h2>
+    <p class="dl-intro reveal">All documents are hosted in my GitHub repository. Click any row to download the file directly.</p>
+    <div class="dl-grid">
+      <a class="dl-card reveal" href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-Resume.pdf" download target="_blank">
+        <div class="dl-icon-wrap">📄</div>
+        <div class="dl-text"><div class="dl-name">Resume</div><div class="dl-sub">PDF · Kevin Mathew Maran</div></div>
+        <div class="dl-arrow">↓</div>
+      </a>
+      <a class="dl-card reveal" href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-PCAP.pdf" download target="_blank">
+        <div class="dl-icon-wrap">🐍</div>
+        <div class="dl-text"><div class="dl-name">PCAP Certificate</div><div class="dl-sub">Python Institute® · Jan 2025</div></div>
+        <div class="dl-arrow">↓</div>
+      </a>
+      <a class="dl-card reveal" href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-PCEP.pdf" download target="_blank">
+        <div class="dl-icon-wrap">🐍</div>
+        <div class="dl-text"><div class="dl-name">PCEP Certificate</div><div class="dl-sub">Python Institute® · Oct 2024</div></div>
+        <div class="dl-arrow">↓</div>
+      </a>
+      <a class="dl-card reveal" href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-ANN.pdf" download target="_blank">
+        <div class="dl-icon-wrap">🧠</div>
+        <div class="dl-text"><div class="dl-name">Neural Networks Certificate</div><div class="dl-sub">Skillsoft · Nov 2023</div></div>
+        <div class="dl-arrow">↓</div>
+      </a>
+      <a class="dl-card reveal" href="https://raw.githubusercontent.com/KevinMathew1709/KevinMathew1709/main/KevinMathewMaran-MSExcel.pdf" download target="_blank">
+        <div class="dl-icon-wrap">📊</div>
+        <div class="dl-text"><div class="dl-name">MS Excel MOS Certificate</div><div class="dl-sub">Microsoft Expert · Sep 2023</div></div>
+        <div class="dl-arrow">↓</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── LABS ── -->
+<div class="section-sep"></div>
+<section id="labs">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Research Labs</div>
+    <h2 class="section-heading reveal">Labs I've <em>Worked With</em></h2>
+    <div class="labs-grid">
+      <a href="https://ctvlab.utsa.edu" target="_blank" class="lab-card reveal">
+        <div class="lab-type">Computational &amp; Theoretical Visualization</div>
+        <div class="lab-name">CTV Lab</div>
+        <div class="lab-uni">University of Texas at San Antonio</div>
+        <div class="lab-desc">Graduate Research Assistant — optimized GPU-accelerated CFD post-processing pipeline (AQUILA) for 10B+ data point DNS datasets. Research on Lagrangian Coherent Structures published at APS DFD 2025 and compressibility effects published at TFEC 2026.</div>
+        <div class="lab-cta">Visit Lab ↗</div>
+      </a>
+      <a href="https://careai.utsa.edu" target="_blank" class="lab-card reveal">
+        <div class="lab-type">Care &amp; AI Research</div>
+        <div class="lab-name">CareAI Lab</div>
+        <div class="lab-uni">University of Texas at San Antonio</div>
+        <div class="lab-desc">Graduate Research Volunteer — developed GPU-accelerated ASR evaluation pipelines for bias analysis in L2 English speech recognition using transformer-based models. Research submitted to AAAI 2026 and presented at AIM 2026.</div>
+        <div class="lab-cta">Visit Lab ↗</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<div class="section-sep"></div>
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-eyebrow reveal">Contact</div>
+    <h2 class="section-heading reveal">Get in <em>Touch</em></h2>
+    <div class="contact-wrap">
+      <div class="contact-left reveal">
+        <p class="contact-intro">I'm open to opportunities in Software Engineering, Machine Learning, HPC, AI Infrastructure, and Systems Engineering — roles focused on scalable and performance-critical systems. Feel free to reach out.</p>
+        <a href="mailto:kevinmathew.maran@my.utsa.edu" class="contact-email-big">kevinmathew.maran@my.utsa.edu</a>
+        <div class="contact-phone">+1 726-243-8938</div>
+      </div>
+      <div class="contact-links-col reveal">
+        <a href="https://www.linkedin.com/in/kevinmathewmaran" target="_blank" class="clink">
+          <div class="clink-icon"><svg viewBox="0 0 24 24"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg></div>
+          <div class="clink-text"><div class="clink-label">LinkedIn</div><div class="clink-sub">linkedin.com/in/kevinmathewmaran</div></div>
+        </a>
+        <a href="https://github.com/KevinMathew1709" target="_blank" class="clink">
+          <div class="clink-icon"><svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 002 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.69c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0112 6.8c.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0022 12 10 10 0 0012 2z"/></svg></div>
+          <div class="clink-text"><div class="clink-label">GitHub</div><div class="clink-sub">github.com/KevinMathew1709</div></div>
+        </a>
+        <a href="https://devpost.com/KevinMathew1709" target="_blank" class="clink">
+          <div class="clink-icon"><svg viewBox="0 0 24 24"><path d="M6.002 1.61L0 12.004 6.002 22.39h11.996L24 12.004 17.998 1.61H6.002zm1.593 4.084h3.947c3.605 0 6.276 1.695 6.276 6.31 0 4.436-3.21 6.302-6.456 6.302H7.595V5.694zm2.517 2.449v7.714h1.241c2.646 0 3.862-1.55 3.862-3.861.009-2.569-1.096-3.853-3.767-3.853h-1.336z"/></svg></div>
+          <div class="clink-text"><div class="clink-label">Devpost</div><div class="clink-sub">devpost.com/KevinMathew1709</div></div>
+        </a>
+        <a href="mailto:kevinmathew.maran@my.utsa.edu" class="clink">
+          <div class="clink-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+          <div class="clink-text"><div class="clink-label">Email</div><div class="clink-sub">kevinmathew.maran@my.utsa.edu</div></div>
+        </a>
+        <a href="tel:+17262438938" class="clink">
+          <div class="clink-icon"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+          <div class="clink-text"><div class="clink-label">Phone</div><div class="clink-sub">+1 726-243-8938</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Kevin Mathew Maran · San Antonio, TX</span>
+  <span><a href="mailto:kevinmathew.maran@my.utsa.edu">kevinmathew.maran@my.utsa.edu</a></span>
+</footer>
+
+<script>
+// ── MOBILE NAV ──
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const siblings = [...entry.target.parentElement.querySelectorAll('.reveal:not(.visible)')];
+      const idx = Math.max(0, siblings.indexOf(entry.target));
+      setTimeout(() => entry.target.classList.add('visible'), idx * 70);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── ACTIVE NAV ──
+const sections = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+  navAs.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}, { passive: true });
+</script>
+</body>
+</html>
